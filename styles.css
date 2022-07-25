@@ -28,3 +28,11 @@ body {
     height: 600px;
     display: grid;
 }
+
+
+
+.board {
+   user-select: none;  /* PREVENTS DRAGGING AFTER COLOUR HAS BEEN APPLIED
+                         SO USER CAN KEEP COLOURING SAME THING - DRAG POINTER
+                         NEVER APPEARS ON BOARD*/
+  }
