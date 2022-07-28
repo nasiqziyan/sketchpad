@@ -10,6 +10,7 @@ body {
     display: flex;
     justify-content: center;
     font-size: 48px;
+    border: 1px solid red;
 }
 
 .footer {
@@ -21,12 +22,18 @@ body {
 .flex-container {
     display: flex;
     justify-content: space-evenly;
+    border: 1px solid blue;
+}
+
+.control-panel {
+    border: 1px solid green;
 }
 
 .board {
     width: 600px;
     height: 600px;
     display: grid;
+    border: 1px solid yellow;
 }
 
 
@@ -35,4 +42,89 @@ body {
    user-select: none;  /* PREVENTS DRAGGING AFTER COLOUR HAS BEEN APPLIED
                          SO USER CAN KEEP COLOURING SAME THING - DRAG POINTER
                          NEVER APPEARS ON BOARD*/
+}
+
+/* Design slider */
+
+.control-panel {
+    width: 300px;
+}
+
+
+.sliderDiv {
+    width: 100%;
+    margin: 14% auto;
+    position: relative;
   }
+  
+  #slider {
+    -webkit-appearance: none; 
+    width: 100%;
+    height: 7px;
+    border-radius: 3px;
+  }
+  
+  /* Design slider button */
+  #slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    position: relative;
+    z-index: 3;
+}
+  
+#selector {
+    height: 104px;
+    width: 38px;
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    border: 1px solid red;
+}
+.selectBtn {
+    height: 38px;
+    width: 38px;
+    background-image: url(images/slider.png);
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+}
+
+#selectValue {
+    width: 38px;
+    height: 40px;
+    position: absolute;
+    top: 0px;
+    background: #ffd200;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 45px;
+    font-size: 16px;
+    font-weight: bold;
+    /* left:-12%; */
+}
+
+#selectValue::after {
+    content: '';
+    border-top: 17px solid #ffd200;
+    border-left: 19px solid #000;
+    border-right: 19px solid #000;
+    position: absolute;
+    bottom: -14px;
+    left: 0;
+}
+
+#progressBar {
+    width: 50%;
+    height: 7px;
+    background: #ffd200;
+    border-radius: 3px;
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+}

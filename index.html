@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/main.js" defer></script>
+    <script src="main.js" defer></script>
     <link rel="stylesheet" href="styles.css"> 
     <!-- <link rel="stylesheet" href="reset.css">  -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;600&display=swap" rel="stylesheet">
@@ -26,8 +26,16 @@
             <div id="shading">Colour Fill</div>
             <div id="lighten">Colour Fill</div>
 
-            <div class="slider"></div>
-            <div class="grid-size">Grid Size: 16 x 16</div>
+            <div class="sliderDiv">
+                <input type="range" min="2" max="100" value="50" id="slider">
+                <div id="selector">
+                  <div class="selectBtn"></div>
+                  <div id="selectValue"></div>
+                </div>
+                <div id="progressBar"></div>
+              </div>
+
+            <div class="gridSize">Grid Size: 50 x 50</div>
             <button class="grid-lines">Toggle Grid Lines</button>
             
             <div class="clear-grid"></div>
