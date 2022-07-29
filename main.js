@@ -5,6 +5,9 @@ let selector = document.getElementById('selector');
 let selectValue = document.getElementById('selectValue');
 let progressBar = document.getElementById('progressBar');
 let gridSize = document.querySelector('.gridSize');
+let clearGrid = document.querySelector("#clearGrid");
+let gridLines = document.querySelector('.gridLines');
+let board = document.querySelector(".board");
 
 selectValue.textContent = slider.value
 
@@ -29,40 +32,46 @@ document.body.onmouseup = () => (mouseDown = false)
 
 function populateBoard(size) { 
 
-  let board = document.querySelector(".board");
   squares = board.querySelectorAll('div');
   squares.forEach((div) => (div.remove()));
   board.style.gridTemplateColumns =  `repeat(${size}, 1fr)`;
   board.style.gridTemplateRows =  `repeat(${size}, 1fr)`;  
-
+                     
   let amount = size * size;
   for (let i = 0; i < amount; i++) {
     let square = document.createElement('div');
-    square.style.backgroundColor = 'transparent';
+    square.style.backgroundColor = 'white';
     square.addEventListener('mousedown', changeColour)
     square.addEventListener('mouseover', changeColour)
     board.appendChild(square);
     
   }
+  
 }
+
+gridLines.addEventListener('click', () => {
+  board.classList.toggle('gridToggle');
+})
+
+clearGrid.onclick = () => changeSize(slider.value);
+
 
 function changeColour(e) {
   console.log("type: " + e.type + " " + "mouseDown: " + mouseDown)
   if (e.type === 'mouseover' && !mouseDown) return
   
   else (e.target.style.backgroundColor = 'red')
-
-  
 }
 
 function changeSize(size) {
-  
   populateBoard(size)
 }
 
+function initiateBoard() {
+  populateBoard(50);
+}
 
-populateBoard(50);
-
+initiateBoard()
 
 
 

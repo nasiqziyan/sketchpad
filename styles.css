@@ -34,15 +34,17 @@ body {
     height: 600px;
     display: grid;
     border: 1px solid yellow;
+    user-select: none;  /* PREVENTS DRAGGING AFTER COLOUR HAS BEEN APPLIED
+                        SO USER CAN KEEP COLOURING SAME THING - DRAG POINTER
+                        NEVER APPEARS ON BOARD*/
+    background-color: rgba(128, 128, 128,0.5);
+    gap: 1px;
 }
 
-
-
-.board {
-   user-select: none;  /* PREVENTS DRAGGING AFTER COLOUR HAS BEEN APPLIED
-                         SO USER CAN KEEP COLOURING SAME THING - DRAG POINTER
-                         NEVER APPEARS ON BOARD*/
+.gridToggle {
+    grid-gap: 0px;
 }
+
 
 /* Design slider */
 
