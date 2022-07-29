@@ -41,6 +41,7 @@ function populateBoard(size) {
   let amount = size * size;
   for (let i = 0; i < amount; i++) {
     let square = document.createElement('div');
+    square.classList.add('square');
     square.style.backgroundColor = 'white';
     square.addEventListener('mousedown', changeColour)
     square.addEventListener('mouseover', changeColour)
@@ -54,7 +55,11 @@ gridLines.addEventListener('click', () => {
   board.classList.toggle('gridToggle');
 })
 
-clearGrid.onclick = () => changeSize(slider.value);
+clearGrid.onclick = () => {
+  changeSize(slider.value);
+  pickr2.setColor('white');
+  // changeBgColor(defaultBgColor);
+};
 
 // Use Pickr Library for creating colour picker
 
@@ -138,19 +143,34 @@ const pickr2 = Pickr.create({
 // Make Chosen Pen Color Functional
 
 let userColour = '#000000'
+let defaultBgColor = 'white'
 
 function changeColour(e) {
-  console.log("type: " + e.type + " " + "mouseDown: " + mouseDown)
   if (e.type === 'mouseover' && !mouseDown) return
   
   else {
-    pickr.on('change', (color) => {userColour = color.toRGBA().toString();})  
+    pickr.on('change', (color) => {userColour = color.toRGBA().toString();
+    pickr.applyColor(true) // Does the same functionality as save (changes the color of the pickr box for pen colour)
+  })  
     e.target.style.backgroundColor = userColour;
-    pickr.applyColor(true) // Does the same functionality as save (changes the color of the pickr box)
+     
   }
 }
 
+pickr2.on('change', (color) => {
+  bgColor = color.toRGBA().toString();
+  changeBgColor(bgColor)
+})
 
+function changeBgColor(input) {
+  let squares = document.querySelectorAll('.square');
+
+  for (let i = 0; i < squares.length; i++) {
+    let currentSquare = squares[i];
+    currentSquare.style.backgroundColor = input;
+    pickr2.applyColor(true) // Does the same functionality as save (changes the color of the pickr box for background)
+  }
+}
 
 function changeSize(size) {
   populateBoard(size)
