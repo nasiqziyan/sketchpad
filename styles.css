@@ -37,7 +37,7 @@ body {
     user-select: none;  /* PREVENTS DRAGGING AFTER COLOUR HAS BEEN APPLIED
                         SO USER CAN KEEP COLOURING SAME THING - DRAG POINTER
                         NEVER APPEARS ON BOARD*/
-    background-color: rgba(128, 128, 128,0.5);
+    background-color: rgba(128, 128, 128, 0.2);
     gap: 1px;
 }
 
@@ -130,3 +130,18 @@ body {
     bottom: 4px;
     left: 0;
 }
+
+/* Style color picker */
+
+.pcr-button {
+    min-width: 110px;
+    min-height: 35px;
+
+}
+
+.color-card,
+.color-card-2 {
+    display: flex;
+    align-items: center;
+}
+
