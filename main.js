@@ -10,6 +10,7 @@ let gridLines = document.querySelector('.gridLines');
 let board = document.querySelector(".board");
 let pcrButton = document.querySelector('pcr-button');
 let eraser = document.querySelector('#eraser-btn');
+let pastel = document.querySelector('#pastel');
 
 selectValue.textContent = slider.value
 
@@ -147,11 +148,20 @@ let userColour = '#000000'
 let defaultBgColor = 'white'
 
 function changeColour(e) {
+
   if (e.type === 'mouseover' && !mouseDown) return
   
   else {
-    initPenColour()  
-    e.target.style.backgroundColor = userColour;
+
+    if (eraser.classList.contains('active')) {
+      userColour = pickr2.getColor().toRGBA()
+      e.target.style.backgroundColor = userColour;
+
+    } else {
+      userColour = pickr.getColor().toRGBA()
+      e.target.style.backgroundColor = userColour;
+    }
+      
      
   }
 }
@@ -164,6 +174,7 @@ pickr2.on('change', (color) => {
   bgColor = color.toRGBA().toString();
   currentBgColor = bgColor;
   changeBgColor(bgColor)
+  if (pickr2.isOpen()) eraser.classList.remove('active');
 })
 
 function changeBgColor(input) {
@@ -174,20 +185,29 @@ function changeBgColor(input) {
     currentSquare.style.backgroundColor = input;
     pickr2.applyColor(true) // Does the same functionality as save (changes the color of the pickr box for background)
   }
+
 }
+
+//
+
 
 
 // Make Eraser Functional
 
 eraser.addEventListener('click', () => {
+
   eraser.classList.toggle('active');
   if (eraser.classList.contains('active')) {
-    userColour = currentBgColor;
+    userColour = pickr2.getColor().toRGBA()
 
   } else  {
     userColour = pickr.getColor().toRGBA()
   }
 })
+
+// Make Pastel Functional 
+
+
 
 
 function changeSize(size) {
@@ -199,6 +219,7 @@ function initPenColour() {
     userColour = color.toRGBA().toString();
     pickr.applyColor(true) // Does the same functionality as save (changes the color of the pickr box for pen colour)
   })
+
 }
 
 function initBoard() {
