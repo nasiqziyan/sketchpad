@@ -9,6 +9,7 @@ let clearGrid = document.querySelector("#clearGrid");
 let gridLines = document.querySelector('.gridLines');
 let board = document.querySelector(".board");
 let pcrButton = document.querySelector('pcr-button');
+let eraser = document.querySelector('#eraser-btn');
 
 selectValue.textContent = slider.value
 
@@ -24,6 +25,7 @@ slider.oninput = function() {
 slider.onmouseup = function() {
   newSize = +this.value
   changeSize(newSize)
+  pickr2.setColor(defaultBgColor);
 }
 
 
@@ -57,8 +59,7 @@ gridLines.addEventListener('click', () => {
 
 clearGrid.onclick = () => {
   changeSize(slider.value);
-  pickr2.setColor('white');
-  // changeBgColor(defaultBgColor);
+  pickr2.setColor(defaultBgColor);
 };
 
 // Use Pickr Library for creating colour picker
@@ -140,7 +141,7 @@ const pickr2 = Pickr.create({
   }
 });
 
-// Make Chosen Pen Color Functional
+// Make Chosen Pen Colour Functional
 
 let userColour = '#000000'
 let defaultBgColor = 'white'
@@ -149,16 +150,19 @@ function changeColour(e) {
   if (e.type === 'mouseover' && !mouseDown) return
   
   else {
-    pickr.on('change', (color) => {userColour = color.toRGBA().toString();
-    pickr.applyColor(true) // Does the same functionality as save (changes the color of the pickr box for pen colour)
-  })  
+    initPenColour()  
     e.target.style.backgroundColor = userColour;
      
   }
 }
 
+// Make Chosen Background Colour Functional
+
+let currentBgColor = defaultBgColor;
+
 pickr2.on('change', (color) => {
   bgColor = color.toRGBA().toString();
+  currentBgColor = bgColor;
   changeBgColor(bgColor)
 })
 
@@ -172,15 +176,37 @@ function changeBgColor(input) {
   }
 }
 
+
+// Make Eraser Functional
+
+eraser.addEventListener('click', () => {
+  eraser.classList.toggle('active');
+  if (eraser.classList.contains('active')) {
+    userColour = currentBgColor;
+
+  } else  {
+    userColour = pickr.getColor().toRGBA()
+  }
+})
+
+
 function changeSize(size) {
   populateBoard(size)
 }
 
-function initiateBoard() {
+function initPenColour() {
+  pickr.on('change', (color) => {
+    userColour = color.toRGBA().toString();
+    pickr.applyColor(true) // Does the same functionality as save (changes the color of the pickr box for pen colour)
+  })
+}
+
+function initBoard() {
+  initPenColour()
   populateBoard(50);
 }
 
-initiateBoard()
+initBoard()
 
 
 
