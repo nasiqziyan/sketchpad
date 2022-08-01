@@ -61,6 +61,7 @@ gridLines.addEventListener('click', () => {
 clearGrid.onclick = () => {
   changeSize(slider.value);
   pickr2.setColor(defaultBgColor);
+  eraser.classList.remove('active');
 };
 
 // Use Pickr Library for creating colour picker
@@ -188,10 +189,6 @@ function changeBgColor(input) {
 
 }
 
-//
-
-
-
 // Make Eraser Functional
 
 eraser.addEventListener('click', () => {
@@ -218,6 +215,7 @@ function initPenColour() {
   pickr.on('change', (color) => {
     userColour = color.toRGBA().toString();
     pickr.applyColor(true) // Does the same functionality as save (changes the color of the pickr box for pen colour)
+    if (pickr.isOpen()) eraser.classList.remove('active');
   })
 
 }
