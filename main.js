@@ -26,6 +26,7 @@ slider.oninput = function() {
   
   eraser.classList.remove('active');
   lighter.classList.remove('active');
+  shader.classList.remove('active');
 
 }
 
@@ -68,8 +69,9 @@ clearGrid.onclick = () => {
   changeSize(slider.value);
   pickr2.setColor(defaultBgColor);
 
-  eraser.classList.remove('active');
-  lighter.classList.remove('active');
+  // eraser.classList.remove('active');
+  // lighter.classList.remove('active');
+  // shader.classList.remove('active');
 };
 
 // Use Pickr Library for creating colour picker
@@ -170,8 +172,14 @@ function changeColour(e) {
     } else if (lighter.classList.contains('active')) {
 
       selectedColour = e.target.style.backgroundColor;
-      
       let rgbaVal = lightenColour(selectedColour);
+      rgbaValString = `rgba(${rgbaVal.toString()})`;
+      e.target.style.backgroundColor = rgbaValString;
+
+    } else if (shader.classList.contains('active')) {
+
+      selectedColour = e.target.style.backgroundColor;
+      let rgbaVal = shadeColour(selectedColour);
       rgbaValString = `rgba(${rgbaVal.toString()})`;
       e.target.style.backgroundColor = rgbaValString;
     
@@ -184,22 +192,6 @@ function changeColour(e) {
   }
 }
 
-function lightenColour(cellColour) {
-  // let rgbaVal = cellColour.match(/\d+/g); https://stackoverflow.com/questions/10970958/get-a-color-component-from-an-rgb-string-in-javascript; doesnt work well.
-  rgbaVal = cellColour.includes("a") ?    // If the string looks like rgba( , , , ) we extract from the 5th position to get ( , , , ), then convert to 
-                                              // arr. If string looks like rgb( , , ), we extract from 4th position in string to get ( , , ); works well.
-            cellColour.substring(5, cellColour.length-1).replace(/ /g, '').split(',') : 
-            cellColour.substring(4, cellColour.length-1).replace(/ /g, '').split(',');
-  if (rgbaVal.length == 3) rgbaVal.push('1');
-      
-  for (let i = 0; i<=2; i++) {
-    rgbaVal[i] =  (Number(rgbaVal[i]) + 25).toString();
-    // rgbaVal[rgbaVal.length - 1] =  (Number(rgbaVal[rgbaVal.length - 1]) - 0.2).toString(); previous way of making lighter
-  }
-
-  return rgbaVal;
-
-}
 
 // Make Chosen Background Colour Functional
 
@@ -212,6 +204,7 @@ pickr2.on('change', (color) => {
   if (pickr2.isOpen()) {
     eraser.classList.remove('active');
     lighter.classList.remove('active');
+    shader.classList.remove('active');
   }
 })
 
@@ -230,7 +223,7 @@ function changeBgColor(input) {
 
 eraser.addEventListener('click', () => {
 
-  eraser.classList.toggle('active');
+  // eraser.classList.toggle('active');           // deprecated by lines starting with: "buttons.forEach((button) => {"
   if (eraser.classList.contains('active')) {
     userColour = pickr2.getColor().toRGBA()
 
@@ -241,11 +234,70 @@ eraser.addEventListener('click', () => {
 
 // Make Toggle lighten Functionality
 
-lighter.addEventListener('click', () => {
-  lighter.classList.toggle('active');
-})
+// lighter.addEventListener('click', () => {      // deprecated by lines starting with: "buttons.forEach((button) => {"
+//   lighter.classList.toggle('active');
+// })
 
+function lightenColour(cellColour) {
+  // let rgbaVal = cellColour.match(/\d+/g); https://stackoverflow.com/questions/10970958/get-a-color-component-from-an-rgb-string-in-javascript; doesnt work well.
+  
+  // If the string looks like rgba( , , , ) we extract from the 5th position to get ( , , , ), then convert to 
+  // arr. If string looks like rgb( , , ), we extract from 4th position in string to get ( , , ); works well.
+  rgbaVal = cellColour.includes("a") ?                                     
+            cellColour.substring(5, cellColour.length-1).replace(/ /g, '').split(',') : 
+            cellColour.substring(4, cellColour.length-1).replace(/ /g, '').split(',');
 
+  if (rgbaVal.length == 3) rgbaVal.push('1'); //
+      
+  for (let i = 0; i<=2; i++) {
+    rgbaVal[i] =  (Number(rgbaVal[i]) + 25).toString();
+    // rgbaVal[rgbaVal.length - 1] =  (Number(rgbaVal[rgbaVal.length - 1]) - 0.2).toString(); previous way of making lighter
+  }
+
+  return rgbaVal;
+
+}
+
+// Make Toggle Shader Functionality
+
+// shader.addEventListener('click', () => {       // deprecated by lines starting with: "buttons.forEach((button) => {"
+//   shader.classList.toggle('active');
+// })
+
+function shadeColour(cellColour) {
+  // let rgbaVal = cellColour.match(/\d+/g); https://stackoverflow.com/questions/10970958/get-a-color-component-from-an-rgb-string-in-javascript; doesnt work well.
+  rgbaVal = cellColour.includes("a") ?    // If the string looks like rgba( , , , ) we extract from the 5th position to get ( , , , ), then convert to 
+                                              // arr. If string looks like rgb( , , ), we extract from 4th position in string to get ( , , ); works well.
+            cellColour.substring(5, cellColour.length-1).replace(/ /g, '').split(',') : 
+            cellColour.substring(4, cellColour.length-1).replace(/ /g, '').split(',');
+  if (rgbaVal.length == 3) rgbaVal.push('1');
+      
+  for (let i = 0; i<=2; i++) {
+    rgbaVal[i] =  (Number(rgbaVal[i]) - 25).toString();
+  }
+
+  return rgbaVal;
+
+}
+
+// When a given button is toggled, disable all other togglable buttons.
+
+let togglable = document.querySelectorAll('.togglable');
+
+togglable.forEach((button) => {
+  button.addEventListener('click', () => {
+
+    if (button.classList.contains('active')) {
+      button.classList.remove('active');
+    }
+
+    else {
+      togglable.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+    }
+    
+  });
+});
 
 
 function changeSize(size) {
@@ -259,6 +311,7 @@ function initPenColour() {
     if (pickr.isOpen()) {
       eraser.classList.remove('active');
       lighter.classList.remove('active');
+      shader.classList.remove('active');
     }
   })
 

@@ -37,7 +37,7 @@ body {
     user-select: none;  /* PREVENTS DRAGGING AFTER COLOUR HAS BEEN APPLIED
                         SO USER CAN KEEP COLOURING SAME THING - DRAG POINTER
                         NEVER APPEARS ON BOARD*/
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: rgba(0, 0, 0, 0.05);
     gap: 1px;
 }
 
@@ -147,7 +147,8 @@ body {
 
 /* Eraser button */
 
-.active {
+.active, button:hover {
     background-color: yellow;
-    color: rgb(20, 20, 20)
+    color: rgb(20, 20, 20);
+    cursor: pointer;
 }
