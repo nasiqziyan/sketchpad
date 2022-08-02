@@ -11,6 +11,9 @@ let board = document.querySelector(".board");
 let pcrButton = document.querySelector('pcr-button');
 let eraser = document.querySelector('#eraser-btn');
 let pastel = document.querySelector('#pastel');
+let lighter = document.querySelector("#lighten-btn");
+let shader = document.querySelector("#shader-btn");
+
 
 selectValue.textContent = slider.value
 
@@ -20,6 +23,9 @@ slider.oninput = function() {
   progressBar.style.width = this.value + '%'
   // gridSize.textContent = this.value
   gridSize.textContent=`Grid Size: ${this.value} x ${this.value}`
+  
+  eraser.classList.remove('active');
+  lighter.classList.remove('active');
 
 }
 
@@ -45,7 +51,7 @@ function populateBoard(size) {
   for (let i = 0; i < amount; i++) {
     let square = document.createElement('div');
     square.classList.add('square');
-    square.style.backgroundColor = 'white';
+    square.style.backgroundColor = 'rgba(255,255,255,1)';
     square.addEventListener('mousedown', changeColour)
     square.addEventListener('mouseover', changeColour)
     board.appendChild(square);
@@ -61,7 +67,9 @@ gridLines.addEventListener('click', () => {
 clearGrid.onclick = () => {
   changeSize(slider.value);
   pickr2.setColor(defaultBgColor);
+
   eraser.classList.remove('active');
+  lighter.classList.remove('active');
 };
 
 // Use Pickr Library for creating colour picker
@@ -69,7 +77,7 @@ clearGrid.onclick = () => {
 const pickr = Pickr.create({
   el: '.color-picker',
   theme: 'classic', // or 'monolith', or 'nano'
-  default: '#000000',
+  default: 'rgba(0, 0, 0, 1)',
 
   swatches: [
       'rgba(244, 67, 54, 1)',
@@ -107,7 +115,7 @@ const pickr = Pickr.create({
 const pickr2 = Pickr.create({
   el: '.color-picker2',
   theme: 'classic', // or 'monolith', or 'nano'
-  default: '#ffffff',
+  default: 'rgba(255,255,255,1)',
   
 
   swatches: [
@@ -145,8 +153,9 @@ const pickr2 = Pickr.create({
 
 // Make Chosen Pen Colour Functional
 
-let userColour = '#000000'
+let userColour = 'rgba(0, 0, 0, 1)'
 let defaultBgColor = 'white'
+
 
 function changeColour(e) {
 
@@ -158,13 +167,38 @@ function changeColour(e) {
       userColour = pickr2.getColor().toRGBA()
       e.target.style.backgroundColor = userColour;
 
+    } else if (lighter.classList.contains('active')) {
+
+      selectedColour = e.target.style.backgroundColor;
+      
+      let rgbaVal = lightenColour(selectedColour);
+      rgbaValString = `rgba(${rgbaVal.toString()})`;
+      e.target.style.backgroundColor = rgbaValString;
+    
     } else {
-      userColour = pickr.getColor().toRGBA()
+      userColour = pickr.getColor().toRGBA();
       e.target.style.backgroundColor = userColour;
     }
       
      
   }
+}
+
+function lightenColour(cellColour) {
+  // let rgbaVal = cellColour.match(/\d+/g); https://stackoverflow.com/questions/10970958/get-a-color-component-from-an-rgb-string-in-javascript; doesnt work well.
+  rgbaVal = cellColour.includes("a") ?    // If the string looks like rgba( , , , ) we extract from the 5th position to get ( , , , ), then convert to 
+                                              // arr. If string looks like rgb( , , ), we extract from 4th position in string to get ( , , ); works well.
+            cellColour.substring(5, cellColour.length-1).replace(/ /g, '').split(',') : 
+            cellColour.substring(4, cellColour.length-1).replace(/ /g, '').split(',');
+  if (rgbaVal.length == 3) rgbaVal.push('1');
+      
+  for (let i = 0; i<=2; i++) {
+    rgbaVal[i] =  (Number(rgbaVal[i]) + 25).toString();
+    // rgbaVal[rgbaVal.length - 1] =  (Number(rgbaVal[rgbaVal.length - 1]) - 0.2).toString(); previous way of making lighter
+  }
+
+  return rgbaVal;
+
 }
 
 // Make Chosen Background Colour Functional
@@ -175,7 +209,10 @@ pickr2.on('change', (color) => {
   bgColor = color.toRGBA().toString();
   currentBgColor = bgColor;
   changeBgColor(bgColor)
-  if (pickr2.isOpen()) eraser.classList.remove('active');
+  if (pickr2.isOpen()) {
+    eraser.classList.remove('active');
+    lighter.classList.remove('active');
+  }
 })
 
 function changeBgColor(input) {
@@ -202,7 +239,11 @@ eraser.addEventListener('click', () => {
   }
 })
 
-// Make Pastel Functional 
+// Make Toggle lighten Functionality
+
+lighter.addEventListener('click', () => {
+  lighter.classList.toggle('active');
+})
 
 
 
@@ -215,7 +256,10 @@ function initPenColour() {
   pickr.on('change', (color) => {
     userColour = color.toRGBA().toString();
     pickr.applyColor(true) // Does the same functionality as save (changes the color of the pickr box for pen colour)
-    if (pickr.isOpen()) eraser.classList.remove('active');
+    if (pickr.isOpen()) {
+      eraser.classList.remove('active');
+      lighter.classList.remove('active');
+    }
   })
 
 }
