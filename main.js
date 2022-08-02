@@ -183,6 +183,11 @@ function changeColour(e) {
       rgbaValString = `rgba(${rgbaVal.toString()})`;
       e.target.style.backgroundColor = rgbaValString;
     
+    } else if (pastel.classList.contains('active')) {
+
+      RgbaPastelString = RandomPastelColour();
+      e.target.style.backgroundColor = RgbaPastelString;
+    
     } else {
       userColour = pickr.getColor().toRGBA();
       e.target.style.backgroundColor = userColour;
@@ -192,6 +197,31 @@ function changeColour(e) {
   }
 }
 
+
+function RandomPastelColour () {
+  
+  let LightSalmonPink = 'rgba(255,154,162, 1)'
+  let Melon = 'rgba(255, 183, 178, 1)'
+  let VeryPaleOrange = 'rgba(255, 218, 193, 1)'
+  let DirtyWhite = 'rgba(226, 240, 203, 1)'
+  let MagicMint = 'rgba(181, 234, 215, 1)'
+  let CrayolasPeriwinkle = 'rgba(199, 206, 234, 1)'
+  
+  let LightBlueish = 'rgba(204,241,255,1)';
+  let Purpleish = 'rgba(224,215,255,1)';
+  let Pinkish = 'rgba(255,204,225,1)';
+  let BabyBlueish = 'rgba(215,238,255,1)';
+  let Yellowish = 'rgba(250,255,199,1)';
+
+  let pastelColours = [];
+  pastelColours.push(LightSalmonPink, Melon, VeryPaleOrange, 
+          DirtyWhite, MagicMint, CrayolasPeriwinkle, 
+          LightBlueish, Purpleish, Pinkish,BabyBlueish, Yellowish)
+  
+  randomInt = Math.floor(Math.random() * pastelColours.length)
+
+  return pastelColours[randomInt];
+}
 
 // Make Chosen Background Colour Functional
 
@@ -214,7 +244,7 @@ function changeBgColor(input) {
   for (let i = 0; i < squares.length; i++) {
     let currentSquare = squares[i];
     currentSquare.style.backgroundColor = input;
-    pickr2.applyColor(true) // Does the same functionality as save (changes the color of the pickr box for background)
+    pickr2.applyColor(true) // Does the same functionality as 'save' from pickr library (changes the color of the pickr box for background)
   }
 
 }
@@ -251,7 +281,8 @@ function lightenColour(cellColour) {
       
   for (let i = 0; i<=2; i++) {
     rgbaVal[i] =  (Number(rgbaVal[i]) + 25).toString();
-    // rgbaVal[rgbaVal.length - 1] =  (Number(rgbaVal[rgbaVal.length - 1]) - 0.2).toString(); previous way of making lighter
+    // rgbaVal[rgbaVal.length - 1] =  (Number(rgbaVal[rgbaVal.length - 1]) - 0.2).toString();  previous way of making lighter, but reducing opacity
+                                                                                              // is not good because gap background colour gets revealed 
   }
 
   return rgbaVal;
@@ -266,8 +297,12 @@ function lightenColour(cellColour) {
 
 function shadeColour(cellColour) {
   // let rgbaVal = cellColour.match(/\d+/g); https://stackoverflow.com/questions/10970958/get-a-color-component-from-an-rgb-string-in-javascript; doesnt work well.
-  rgbaVal = cellColour.includes("a") ?    // If the string looks like rgba( , , , ) we extract from the 5th position to get ( , , , ), then convert to 
-                                              // arr. If string looks like rgb( , , ), we extract from 4th position in string to get ( , , ); works well.
+  
+  // If the string looks like rgba( , , , ) we extract from the 5th position to get ( , , , ), then convert to 
+  // arr. If string looks like rgb( , , ), we extract from 4th position in string to get ( , , ); works well.
+
+  rgbaVal = cellColour.includes("a") ?    
+                                              
             cellColour.substring(5, cellColour.length-1).replace(/ /g, '').split(',') : 
             cellColour.substring(4, cellColour.length-1).replace(/ /g, '').split(',');
   if (rgbaVal.length == 3) rgbaVal.push('1');
@@ -280,7 +315,9 @@ function shadeColour(cellColour) {
 
 }
 
-// When a given button is toggled, disable all other togglable buttons.
+// Make Toggle Pastel Functionality
+
+// When a given button is toggled, disable all other togglable buttons (gridLines is not togglable).
 
 let togglable = document.querySelectorAll('.togglable');
 
@@ -307,7 +344,7 @@ function changeSize(size) {
 function initPenColour() {
   pickr.on('change', (color) => {
     userColour = color.toRGBA().toString();
-    pickr.applyColor(true) // Does the same functionality as save (changes the color of the pickr box for pen colour)
+    pickr.applyColor(true) // Does the same functionality as 'save' from pickr library (changes the color of the pickr box for pen colour)
     if (pickr.isOpen()) {
       eraser.classList.remove('active');
       lighter.classList.remove('active');
