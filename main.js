@@ -3,7 +3,7 @@ let mouseDown = false
 let slider = document.getElementById('slider');
 let selector = document.getElementById('selector');
 let selectValue = document.getElementById('selectValue');
-let progressBar = document.getElementById('progressBar');
+let progressBar = document.getElementById('progress-bar');
 let gridSize = document.querySelector('.gridSize');
 let clearGrid = document.querySelector("#clearGrid");
 let gridLines = document.querySelector('.gridLines');
@@ -15,25 +15,42 @@ let lighter = document.querySelector("#lighten-btn");
 let shader = document.querySelector("#shader-btn");
 
 
-selectValue.textContent = slider.value
 
-slider.oninput = function() {
-  selectValue.textContent = this.value
-  selector.style.left = this.value + '%'
-  progressBar.style.width = this.value + '%'
-  // gridSize.textContent = this.value
-  gridSize.textContent=`Grid Size: ${this.value} x ${this.value}`
-  
-  eraser.classList.remove('active');
-  lighter.classList.remove('active');
-  shader.classList.remove('active');
+// selectValue.textContent = slider.value
 
+function rangeSlider(value) {
+  progressBar.style.width = (value / 100) * 100 + '%';
+  gridSize.textContent=`Grid Size: ${value} x ${value}`;
 }
+
+function rangeSliderValue(value) {
+  progressBar.style.width = (value / 100) * 100 + "%";
+}
+
+
+// slider.oninput = function() {
+//   selectValue.textContent = this.value
+//   selector.style.left = this.value + '%'
+//   progressBar.style.width = this.value + '%'
+//   // gridSize.textContent = this.value
+//   gridSize.textContent=`Grid Size: ${this.value} x ${this.value}`
+  
+//   eraser.classList.remove('active');
+//   lighter.classList.remove('active');
+//   shader.classList.remove('active');
+
+// }
 
 slider.onmouseup = function() {
   newSize = +this.value
   changeSize(newSize)
   pickr2.setColor(defaultBgColor);
+
+  eraser.classList.remove('active');
+  lighter.classList.remove('active');
+  shader.classList.remove('active');
+  pastel.classList.remove('active');
+
 }
 
 
@@ -72,6 +89,7 @@ clearGrid.onclick = () => {
   // eraser.classList.remove('active');
   // lighter.classList.remove('active');
   // shader.classList.remove('active');
+  
 };
 
 // Use Pickr Library for creating colour picker

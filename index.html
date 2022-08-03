@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="styles.css"> 
     <!-- <link rel="stylesheet" href="reset.css">  -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;600&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Nova Flat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>SketchPad</title>
 </head>
 <body>
@@ -34,14 +36,13 @@
                 <button class='togglable' id="shader-btn">Toggle Shading</button>
                 <button class='togglable' id="lighten-btn">Toggle Lighten</button>
 
-            <div class="sliderDiv">
-                <input type="range" min="2" max="100" value="50" id="slider">
-                <div id="selector">
-                  <div class="selectBtn"></div>
-                  <div id="selectValue"></div>
-                </div>
-                <div id="progressBar"></div>
-              </div>
+            <div class="slider-div"> <!--Heres an anchor point-->
+                <!-- <input type="range" min="2" max="100" value="50" id="slider">  -->
+
+                <input type="range" value="50" min="1" max="100" id="slider"
+                    onmousemove="rangeSliderValue(this.value)" onChange="rangeSlider(this.value)">
+                    <div id="progress-bar"></div>
+            </div>
 
             <div class="gridSize">Grid Size: 50 x 50</div>
             <button class="gridLines">Toggle Grid Lines</button>
@@ -50,11 +51,16 @@
             <button id="clearGrid">Clear Grid</button>
         
         </div>
-
-        <div class="board"></div>
+        <div class="board-border">
+            <div class="board"></div>
+        </div>
     </div>  
 
-    <div class="footer">Copyright © Nasiq Ziyan (GitHub logo) | Source (hyperlinked)</div>
+    <div class="footer">  
+        <a class="footer-link" href="https://github.com/nasiqziyan" target="_blank">Nasiq Ziyan</a> |
+        <a class="footer-link" href="https://github.com/nasiqziyan/sketchpad" target="_blank">Source</a>
+        <a href="https://github.com/nasiqziyan/sketchpad" target="_blank"><i style='font-size: 34px' class="fa fa-github"></i></a>
+    </div>
     
 
 </body>
