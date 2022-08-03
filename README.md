@@ -1,5 +1,3 @@
-# sketchpad
+# Sketchpad
 
-## Credits
-
-- Slider Design: [Muhammad Fadzrin Madu](https://codepen.io/fadzrinmadu/pen/WNrJWbG)
+SketchPad made with HTML, CSS and JavaScript. [Live App](https://nasiqziyan.github.io/sketchpad/)
